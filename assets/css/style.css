@@ -1,0 +1,12 @@
+body {
+
+    background-image: url("../images/backg3.jpg");
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+.ja {
+    background-color: aqua;
+    height: 35rem;
+    margin-top: 6rem;
+}
