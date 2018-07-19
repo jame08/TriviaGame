@@ -1,12 +1,29 @@
-body {
+@font-face{
+    font-family: Parryp;
+    src: url(Parry\ Hotter\ 2.ttf);
 
-    background-image: url("../images/backg3.jpg");
-    background-repeat: no-repeat;
-    height: 100%;
 }
 
-.ja {
-    background-color: aqua;
-    height: 35rem;
-    margin-top: 6rem;
+body {
+
+    background-image: url("../images/HPWP4.jpg");
+    background-repeat: no-repeat;
+  
+}
+
+.quiz {
+
+    height: 20rem;
+    font-family: Parryp;
+}
+
+img {
+    
+    height: 30%;
+    
+}
+
+.nobg {
+
+    background: none;
 }

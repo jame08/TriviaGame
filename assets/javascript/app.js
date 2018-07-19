@@ -2,7 +2,8 @@ var app = (function () {
 
     var private = {
     i:0,
-    time: 5 ,
+    _Time:20,
+    timeRes:10,
     intervalId:0,
     correctAnswer:0,
     wrongAnswer:0,
@@ -25,6 +26,7 @@ var app = (function () {
             response2: "Veritaserum",
             response3: "Poly Juice Potion",
             answer: "Amortentia",
+            
             
 
         },
@@ -102,13 +104,17 @@ var app = (function () {
     },
 
     decrement: function(){
-        private.time = arg;
-        private.time = private.time - 1;
-        if (private.time === 0){
+
+        console.log(private._Time);
+        private._Time = private._Time - 1;
+        
+        
+        if (private._Time === 0){
             $(".row").empty();
             private.stop();
             private.i++;
-            private.time =5;
+            private._Time =5;
+            
         }
     },
 
@@ -124,25 +130,40 @@ var app = (function () {
 
     return {  
 
+        //get index value
         getI: function(){
             return private.i;
         },
-
+        //set index value
         setI: function(){
             private.i = private.i +1;
         },
 
-        getTimer: function(){
+        //get var time 
+        get_Time: function(){
+
+            return private._Time;
+        },
+
+        //set var time
+        set_Time: function(arg){
+            private._Time = arg;
+        },
+
+        //get timer
+        get_Timer: function(){
             return private.interTime();
         },
 
-        setTimer: function(arg){
+        //set timer
+        set_Timer: function(arg){
             private.decrement(arg);
         },
         
 
         init: function(){
-            
+       
+            this.set_Time(20);
             private.interTime();
             this.displayquestion(this.getI());
             
@@ -150,27 +171,32 @@ var app = (function () {
 
   
 
-
         reset: function(){},
 
-        displayquestion: function() { 
-           this.getTimer();
+        displayquestion: function(arg) {
 
-            $(".quiz").append("<div class = 'row'>"+ private.questions[private.i].question +"</div>");
-            $(".quiz").append("<div class = 'row'>"+ private.questions[private.i].response1 +"</div>");
-            $(".quiz").append("<div class = 'row'>"+ private.questions[private.i].response2 +"</div>");
-            $(".quiz").append("<div class = 'row'>"+ private.questions[private.i].response3 +"</div>");
-            $(".quiz").append("<div class = 'row'>"+ private.questions[private.i].answer +"</div>");
+            var i = arg;
+            $(".quiz").append("<div class = 'row ' >"+ private.questions[i].question +"</div>");
+            $(".quiz").append("<div class = 'row ' onclick='app.checkAnswer(event)'> "+ private.questions[i].response1 +"</div>");
+            $(".quiz").append("<div class = 'row' onclick='app.checkAnswer(event)'>"+ private.questions[i].response2 +"</div>");
+            $(".quiz").append("<div class = 'row' onclick='app.checkAnswer(event)'>"+ private.questions[i].response3 +"</div>");
+            $(".quiz").append("<div class = 'row' onclick='app.checkAnswer(event)'>"+ private.questions[i].answer +"</div>");
 
         },
 
-        checkAnswer: function(){},
+        checkAnswer: function(){
+            console.log(event.target.innerText);  
+        if (event.target.innerText === private.questions[this.getI()].answer){
+            this.setI = this.setI() + 1;
 
-        getTime: function(){}
+        console.log(this.setI());
+        console.log("correct");
+        }else {
 
+            console.log("Incorrect");
+        }
         
-
-
+        },
 
 
      };
@@ -179,7 +205,11 @@ var app = (function () {
 
 $(document).ready(function () {
  
+$(".btn").on("click", function(){
+    $(".quiz").empty();
+    app.init()
 
-  app.init();
+})
+
 
 })
