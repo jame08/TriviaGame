@@ -1,302 +1,340 @@
 var app = (function () {
 
     var private = {
-    _Time:0,
-    currentQuestion:0,
-    timeRes:10,
-    intervalId:0,
-    correctAnswer:0,
-    wrongAnswer:0,
-    unAnswer:0,
-    _displayAns:null,
+        _Time: 0,
+        currentQuestion: 0,
+        timeRes: 10,
+        intervalId: 0,
+        correctAnswer: 0,
+        wrongAnswer: 0,
+        unAnswer: 0,
+        _displayAns: null,
+        userInput:null,
 
-    questions: [
-        q1 = {
-            question: "What's the name of Bellatrix' husband?",
-            response:["Albert Lestrange","Rolphius Lestrange","Adolph Lestrange","Rodolphus Lestrange"],
-            answer: 3,
+        questions: [
+            q1 = {
+                question: "What's the name of Bellatrix' husband?",
+                response: ["Albert Lestrange", "Rolphius Lestrange", "Adolph Lestrange", "Rodolphus Lestrange"],
+                answer: 3,
 
-        },
+            },
 
-        q2 = {
+            q2 = {
+
+                question: "Which of these is a type of Love Potion?",
+                response: ["Felix Felicis", "Veritaserum", "Amortentia", "Poly Juice Potion"],
+                answer: 2,
+
+
+
+            },
+
+            q3 = {
+                question: "What class did Neville end up teaching at Hogwarts?",
+                response: ["Herbology", "Charms", "Muggle Studies", "Astronomy"],
+                answer: 0,
+
+            },
+
+            q4 = {
+                question: "Which of these are not one of Hagrid's many pets?",
+                response: ["Fluffy", "Grawp", "Aragin", "Norberta"],
+                answer: 1,
+
+
+            },
+
+            q5 = {
+                question: "Which class did Severus Snape always want to teach?",
+                response: ["Potions", "Transfiguration", "Charms", "Defence Againts the DA"],
+                answer: 3,
+            },
+
+            q6 = {
+                question: "Which Hogwarts house did harry belong to?",
+                response: ["Slytherin", "Raven Claw", "Gryfindor", "Hufflepuff"],
+                answer: 2,
+
+            },
+
+            q7 = {
+                question: "Which was not one of Voldemort's Horcruxes?",
+                response: ["Harry", "Helga's Diadem", "Nagini", "Tom riddle's diary"],
+                answer: 1,
+
+            },
+
+            q8 = {
+                question: "When is Harry’s birthday?",
+                response: ["Jun 20", "Aug 6", "July 8", "July 31"],
+                answer: 3,
+            },
+
+            q9 = {
+                question: "Which one is not a unforgivable spell ?",
+                response: ["Avada Kadavra", "Spectrum Patronus", "Cruciatus", "Imperius"],
+                answer: 1,
+
+            },
+        ],
+
+        interTime: function () {
             
-            question: "Which of these is a type of Love Potion?",
-            response:["Felix Felicis","Veritaserum","Amortentia","Poly Juice Potion"],
-            answer: 2,
+
+            clearInterval(private.intervalId);
+            private.intervalId = setInterval(private.decrement, 1000);
+
+
+        },
+
+        decrement: function () {
+
+            console.log(private._Time);
+            private._Time = private._Time - 1;
+
+            $(".display-time").text(private._Time);
+            if (private._Time === 0) {
+
+                
+                private.stop();
+                private._Time = 0;
+                $(".display-time").empty();
+               
+
+            }
+            else if (private._Time === 0 && private.userInput === null){
+
+                private.stop();
+                private._Time = 0;
+                $(".display-time").empty();
+                private.update();
+
+            }
+               
             
-            
-
-        },
-
-        q3 = {
-            question: "What class did Neville end up teaching at Hogwarts?",
-            response:["Herbology","Charms","Muggle Studies","Astronomy"],
-            answer: 0,
-
-        },
-
-        q4 = {
-            question: "Which of these are not one of Hagrid's many pets?",
-            response:["Fluffy","Grawp","Aragin","Norberta"],
-            answer: 1,
-         
-
-        },
-
-        q5 = {
-            question: "Which class did Severus Snape always want to teach?",
-            response:["Potions","Transfiguration","Charms","Defence Againts the DA" ],
-            answer: 3,
-        },
-
-        q6 = {
-            question: "Which Hogwarts house did harry belong to?",
-            response:["Slytherin","Raven Claw","Gryfindor","Hufflepuff" ],
-            answer: 2,
-    
-        },
-
-        q7 = {
-            question: "Which was not one of Voldemort's Horcruxes?",
-            response:["Harry","Helga's Diadem","Nagini","Tom riddle's diary"],
-            answer: 1,
-        
-        },
-
-        q8 = {
-            question: "When is Harry’s birthday?",
-            response:["Jun 20","Aug 6","July 8","July 31"],
-            answer: 3,
-        },
-
-        q9 = {
-            question: "Which one is not a unforgivable spell ?",
-            response:["Avada Kadavra","Spectrum Patronus","Cruciatus","Imperius"],
-            answer: 1,
-
-        },
-    ],
-
-    interTime: function(){
-        
-        clearInterval(private.intervalId);
-        private.intervalId = setInterval(private.decrement, 1000);
        
-     
-    },
+        },
 
-    decrement: function(){
 
-        console.log(private._Time);
-        private._Time = private._Time -1;
-        
-        $(".display-time").text(private._Time);
-        if (private._Time === 0){
-           
-            private.stop();
-            private._Time = 0;
-            $(".display-time").empty();
-           
+
+        stop: function () {
+            clearInterval(private.intervalId);
+
+        },
+
+        update: function () { 
+            private.currentQuestion +=1;
+            private.unAnswer+=1;
+            private._Time= 5;
+            $(".quiz").empty();
+            var a = $("<div>");
+            var b = $("<div>");
+            a.addClass("row txt");
+            b.addClass("row txt");
+            $(".quiz").append("Time's up");
+            b.text("The Answear is: " + private._displayAns);
+            $(".quiz").append(b);
+
 
         }
-    },
 
-    stop: function(){
-        clearInterval(private.intervalId);
-        
-    },
-
-    update: function(){}
-    
 
     };
 
-    return {  
+    return {
 
-    
 
-        getQuestionLenght: function(){
-           return private.questions.length;
+
+        getQuestionLenght: function () {
+            return private.questions.length;
 
         },
 
-         getCurrentQuestion: function(){
+        getCurrentQuestion: function () {
             return private.currentQuestion;
 
-         },
+        },
 
-         setCurrentQuestion: function(){
+        setCurrentQuestion: function () {
 
-            private.currentQuestion +=1;
-         },
+            private.currentQuestion += 1;
+        },
 
-         setCorrectAnswer: function(){
+        setCorrectAnswer: function () {
 
-            private.correctAnswer+=1;
-         },
+            private.correctAnswer += 1;
+        },
 
-         getCorrecAnswer: function(){
+        getCorrecAnswer: function () {
 
             return private.correctAnswer;
-         },
+        },
 
-         setWrongAnswer: function(){
-             private.wrongAnswer+=1;
-         },
+        setWrongAnswer: function () {
+            private.wrongAnswer += 1;
+        },
 
-         getWrongAnswer: function(){
+        getWrongAnswer: function () {
 
             return private.wrongAnswer;
-         },
+        },
 
 
 
-         setUnAnswer: function(){
+        setUnAnswer: function () {
 
-            private.unAnswer+=1;
-         },
+            private.unAnswer += 1;
+        },
 
-         getUnAnswer: function(){
-             return private.unAnswer;
-         },
+        getUnAnswer: function () {
+            return private.unAnswer;
+        },
 
 
-        getStop: function(){
+        getStop: function () {
             private.stop();
         },
 
-        get_Time: function(){
+        get_Time: function () {
             return private._Time;
         },
-        set_Time: function(arg){
+        set_Time: function (arg) {
             private._Time = arg;
         },
 
-        getQuestionsL: function(){
+        getQuestionsL: function () {
             return private.questions.length;
         },
 
 
 
-        
 
-        init: function(){
-            
+
+        init: function () {
+
             this.displayquestion();
-          this.displaytime(15,14);
-            
+            this.displaytime(15);
+
         },
 
 
         displayquestion: function () {
 
-            if (this.getCurrentQuestion() != 9 ){
-          
-            this.displaytime(15,15);
-            $(".quiz").empty();
-            var a = $("<div>");
-            a.addClass("row txt");
-            a.text(private.questions[this.getCurrentQuestion()].question);
-            $(".quiz").append(a);
+            $(".display-time").text(15);
+            if (this.getCurrentQuestion() != 9) {
 
-            private._displayAns = private.questions[this.getCurrentQuestion()].response[private.questions[this.getCurrentQuestion()].answer];
-            console.log(private._displayAns);
-            for (var i = 0; i < 4; i++) {
-                var b = $("<div>");
-                b.attr("data-state", i);
-                b.addClass("row index txt");
-                b.attr("onclick", "app.checkAnswer(event)");
-                b.text(private.questions[this.getCurrentQuestion()].response[i]);
-                $(".quiz").append(b);
+                this.displaytime(15);
+                $(".quiz").empty();
+                var a = $("<div>");
+                a.addClass("row txt");
+                a.text(private.questions[this.getCurrentQuestion()].question);
+                $(".quiz").append(a);
+
+                private._displayAns = private.questions[this.getCurrentQuestion()].response[private.questions[this.getCurrentQuestion()].answer];
+                console.log(private._displayAns);
+                for (var i = 0; i < 4; i++) {
+                    var b = $("<div>");
+                    b.attr("data-state", i);
+                    b.addClass("row index txt");
+                    b.attr("onclick", "app.getUserInput(event)");
+                    b.text(private.questions[this.getCurrentQuestion()].response[i]);
+                    $(".quiz").append(b);
+                }
+            } else {
+
+                this.scoreDash();
             }
-        } else {
 
-            this.scoreDash();
-        }
+        },
+
+        getUserInput: function () {
+
+            private.userInput = $(event.srcElement).attr("data-state");
+            this.checkAnswer();
+            console.log(private.userInput);
 
         },
 
         checkAnswer: function(){
-        
-        var userInput = $(event.srcElement).attr("data-state");
-        
-        if ( userInput  == private.questions[this.getCurrentQuestion()].answer){
 
-         
-           this.displaytime(5,5),
-            this.setCurrentQuestion();
-            this.setCorrectAnswer();
-            this.displayAnswer("Correct");
-            setTimeout(() => {
-                this.displayquestion();
-            }, 5000);
+            if (private.userInput == private.questions[this.getCurrentQuestion()].answer) {
 
-        }else {
 
-            this.displaytime(5,5);
-            this.setCurrentQuestion();
-            this.setWrongAnswer();
-            this.displayAnswer("Incorrect");
-            setTimeout(()=> {this.displayquestion();
-                },5000);
-         
-        }
+                this.displaytime(5),
+                this.setCurrentQuestion();
+                this.setCorrectAnswer();
+                this.displayAnswer("Correct");
+                setTimeout(() => {
+                    this.displayquestion();
+                }, 5000);
 
-    
+            } else {
 
-        
+                this.displaytime(5);
+                this.setCurrentQuestion();
+                this.setWrongAnswer();
+                
+                this.displayAnswer("Incorrect");
+                setTimeout(() => {
+                    this.displayquestion();
+                }, 5000);
+
+            }
+
+
+
+
         },
 
-    displayAnswer: function(arg){
+        displayAnswer: function (arg) {
 
-        
-        // private.interTime(); 
-        $(".quiz").empty();
-        var a= $("<div>");
-        var b= $("<div>");
-        a.addClass("row txt");
-        b.addClass("row txt");
-        a.text(arg);
-        $(".quiz").append(a);
-        b.text("The Answear is: " + private._displayAns);
-        $(".quiz").append(b);
-        
-        
-    },
+            $(".quiz").empty();
+            $(".display-time").text(5);
+            var a = $("<div>");
+            var b = $("<div>");
+            a.addClass("row txt");
+            b.addClass("row txt");
+            a.text(arg);
+            $(".quiz").append(a);
+            b.text("The Answear is: " + private._displayAns);
+            $(".quiz").append(b);
 
-    displaytime: function(arg,arg1){
-        $(".display-time").text(arg);
-        this.set_Time(arg1);  
-        private.interTime();
-    },
 
- scoreDash: function(){
-    var score = ( this.getCorrecAnswer() / (this.getWrongAnswer() + this.getWrongAnswer())* 100);
-    $(".quiz").empty();
-    var a = $("<div>");
-    a.addClass("row txt");
-    a.text("that wasnt hard !");
-    $(".quiz").append(a);
-   
-    $(".quiz").append('<div class = "row txt">'+"Correct Answers: " + this.getCorrecAnswer()+'</div>');
-    $(".quiz").append('<div class = "row txt">'+"Incorrect Answers: " + this.getWrongAnswer() +'</div>');
-    $(".quiz").append('<div class = "row txt">'+"Unnnswer questions : " + this.getUnAnswer()+'</div>');
-    $(".quiz").append('<div class = "row txt">'+"Total Points: " + score + '</div>');
-  
-    
- }
+        },
 
-     };
+        displaytime: function (arg) {
+            
+            this.set_Time(arg);
+            private.interTime();
+        },
+
+        scoreDash: function () {
+            var score = (this.getCorrecAnswer() / (this.getWrongAnswer() + this.getWrongAnswer()) * 100);
+            $(".quiz").empty();
+            var a = $("<div>");
+            a.addClass("row txt");
+            a.text("that wasnt hard !");
+            $(".quiz").append(a);
+
+            $(".quiz").append('<div class = "row txt">' + "Correct Answers: " + this.getCorrecAnswer() + '</div>');
+            $(".quiz").append('<div class = "row txt">' + "Incorrect Answers: " + this.getWrongAnswer() + '</div>');
+            $(".quiz").append('<div class = "row txt">' + "Unnnswer questions : " + this.getUnAnswer() + '</div>');
+            $(".quiz").append('<div class = "row txt">' + "Total Points: " + score + '</div>');
+
+
+        }
+
+    };
 
 })();
 
 $(document).ready(function () {
- 
-$(".btn").on("click", function(){
-    $(".quiz").empty();
-    app.init()
 
-})
+    $(".btn").on("click", function () {
+        $(".quiz").empty();
+        app.init()
+
+    })
 
 
 })
