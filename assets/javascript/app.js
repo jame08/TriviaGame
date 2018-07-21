@@ -8,6 +8,7 @@ var app = (function () {
     correctAnswer:0,
     wrongAnswer:0,
     unAnswer:0,
+    _displayAns:null,
 
     questions: [
         q1 = {
@@ -188,14 +189,18 @@ var app = (function () {
 
 
         displayquestion: function () {
+
+            if (this.getCurrentQuestion() != 9 ){
           
+            this.displaytime(15,15);
             $(".quiz").empty();
             var a = $("<div>");
             a.addClass("row txt");
             a.text(private.questions[this.getCurrentQuestion()].question);
             $(".quiz").append(a);
 
-
+            private._displayAns = private.questions[this.getCurrentQuestion()].response[private.questions[this.getCurrentQuestion()].answer];
+            console.log(private._displayAns);
             for (var i = 0; i < 4; i++) {
                 var b = $("<div>");
                 b.attr("data-state", i);
@@ -204,16 +209,17 @@ var app = (function () {
                 b.text(private.questions[this.getCurrentQuestion()].response[i]);
                 $(".quiz").append(b);
             }
+        } else {
+
+            this.scoreDash();
+        }
+
         },
 
         checkAnswer: function(){
         
-
-           
-        if (this.getCurrentQuestion() <= this.getQuestionLenght()){
-
         var userInput = $(event.srcElement).attr("data-state");
-
+        
         if ( userInput  == private.questions[this.getCurrentQuestion()].answer){
 
          
@@ -233,27 +239,27 @@ var app = (function () {
             this.displayAnswer("Incorrect");
             setTimeout(()=> {this.displayquestion();
                 },5000);
-            console.log("Incorrect");
-
+         
         }
 
-    }
-    else {
-        console.log("Game Over");
-    }
+    
+
         
         },
 
-    displayAnswer: function(arg,arg2){
+    displayAnswer: function(arg){
 
         
-    
-        private.interTime(); 
+        // private.interTime(); 
         $(".quiz").empty();
-        var a = $("<div>");
+        var a= $("<div>");
+        var b= $("<div>");
         a.addClass("row txt");
+        b.addClass("row txt");
         a.text(arg);
         $(".quiz").append(a);
+        b.text("The Answear is: " + private._displayAns);
+        $(".quiz").append(b);
         
         
     },
@@ -262,7 +268,23 @@ var app = (function () {
         $(".display-time").text(arg);
         this.set_Time(arg1);  
         private.interTime();
-    }
+    },
+
+ scoreDash: function(){
+    var score = ( this.getCorrecAnswer() / (this.getWrongAnswer() + this.getWrongAnswer())* 100);
+    $(".quiz").empty();
+    var a = $("<div>");
+    a.addClass("row txt");
+    a.text("that wasnt hard !");
+    $(".quiz").append(a);
+   
+    $(".quiz").append('<div class = "row txt">'+"Correct Answers: " + this.getCorrecAnswer()+'</div>');
+    $(".quiz").append('<div class = "row txt">'+"Incorrect Answers: " + this.getWrongAnswer() +'</div>');
+    $(".quiz").append('<div class = "row txt">'+"Unnnswer questions : " + this.getUnAnswer()+'</div>');
+    $(".quiz").append('<div class = "row txt">'+"Total Points: " + score + '</div>');
+  
+    
+ }
 
      };
 
