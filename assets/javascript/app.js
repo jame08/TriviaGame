@@ -1,8 +1,7 @@
 var app = (function () {
 
     var private = {
-    binar:null,
-    _Time:20,
+    _Time:0,
     currentQuestion:0,
     timeRes:10,
     intervalId:0,
@@ -90,12 +89,12 @@ var app = (function () {
         console.log(private._Time);
         private._Time = private._Time - 1;
         
-        
+        $("display-time").append(private._Time);
         if (private._Time === 0){
-            $(".row").empty();
+           
             private.stop();
-            private.i++;
-            private._Time =5;
+            private._Time = 0;
+        
 
         }
     },
@@ -164,6 +163,9 @@ var app = (function () {
             private.stop();
         },
 
+        get_Time: function(){
+            return private._Time;
+        },
         set_Time: function(arg){
             private._Time = arg;
         },
@@ -184,13 +186,12 @@ var app = (function () {
 
 
         displayquestion: function () {
+          
             $(".quiz").empty();
-            // this.getStop();
-            // this.set_Time(5);
-            // private.interTime();
+        
     
             var a = $("<div>");
-            a.addClass("row");
+            a.addClass("row inner");
             a.text(private.questions[this.getCurrentQuestion()].question);
             $(".quiz").append(a);
 
@@ -198,7 +199,7 @@ var app = (function () {
             for (var i = 0; i < 4; i++) {
                 var b = $("<div>");
                 b.attr("data-state", i);
-                b.addClass("row index");
+                b.addClass("row index inner");
                 b.attr("onclick", "app.checkAnswer(event)");
                 b.text(private.questions[this.getCurrentQuestion()].response[i]);
                 $(".quiz").append(b);
@@ -217,14 +218,16 @@ var app = (function () {
         
         this.setCurrentQuestion();
         this.setCorrectAnswer();
-        this.displayAnswer();
-        setTimeout(()=> {this.displayquestion()},5000);
+        this.displayAnswer("Correct");
+        setTimeout(()=> {this.displayquestion();
+        },5000);
 
         }else {
             this.setCurrentQuestion();
             this.setWrongAnswer();
-            this.displayAnswer();
-            setTimeout(()=> {this.displayquestion();},5000);
+            this.displayAnswer("Incorrect");
+            setTimeout(()=> {this.displayquestion();
+                },5000);
             console.log("Incorrect");
 
         }
@@ -236,15 +239,18 @@ var app = (function () {
         
         },
 
-    displayAnswer: function(arg){
+    displayAnswer: function(arg,arg2){
 
-    
         
+    
+        this.set_Time(5);  
+        private.interTime(); 
         $(".quiz").empty();
         var a = $("<div>");
         a.addClass("row");
-        a.text("Good One");
+        a.text(arg);
         $(".quiz").append(a);
+        
         
     }
 
