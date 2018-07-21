@@ -1,23 +1,21 @@
 @font-face{
     font-family: Parryp;
     src: url(Parry\ Hotter\ 2.ttf);
-   
+    color: gray;
 
 }
 
 body {
 
-    /* background-image: url("../images/HPWP3.jpg"); */
+    background-image: url("../images/HPWP4.jpg");
     background-repeat: no-repeat;
-    background-size: cover;
-    height: 80vh;
- 
+  
 }
 
 .quiz {
 
     height: 20rem;
- 
+    font-family: Parryp;
 }
 
 img {
@@ -29,9 +27,4 @@ img {
 .nobg {
 
     background: none;
-}
-
-.hpw {
-
-    color: white;
 }

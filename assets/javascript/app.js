@@ -1,8 +1,9 @@
 var app = (function () {
 
     var private = {
-    i:0,
+    binar:null,
     _Time:20,
+    currentQuestion:0,
     timeRes:10,
     intervalId:0,
     correctAnswer:0,
@@ -12,20 +13,16 @@ var app = (function () {
     questions: [
         q1 = {
             question: "What's the name of Bellatrix' husband?",
-            response1: "Albert Lestrange",
-            response2: "Rolphius Lestrange",
-            response3: "Adolph Lestrange",
-            answer: "Rodolphus Lestrange",
+            response:["Albert Lestrange","Rolphius Lestrange","Adolph Lestrange","Rodolphus Lestrange"],
+            answer: 3,
 
         },
 
         q2 = {
             
             question: "Which of these is a type of Love Potion?",
-            response1: "Felix Felicis",
-            response2: "Veritaserum",
-            response3: "Poly Juice Potion",
-            answer: "Amortentia",
+            response:["Felix Felicis","Veritaserum","Amortentia","Poly Juice Potion"],
+            answer: 2,
             
             
 
@@ -33,64 +30,49 @@ var app = (function () {
 
         q3 = {
             question: "What class did Neville end up teaching at Hogwarts?",
-            response1: "Astronomy",
-            response2: "Muggle Studies",
-            response3: "Charms",
-            answer: "Herbology",
+            response:["Herbology","Charms","Muggle Studies","Astronomy"],
+            answer: 0,
 
         },
 
         q4 = {
             question: "Which of these are not one of Hagrid's many pets?",
-            response1: "Fluffy",
-            response2: "Aragin",
-            response3: "Norberta",
-            answer: "Grawp",
+            response:["Fluffy","Grawp","Aragin","Norberta"],
+            answer: 1,
+         
 
         },
 
         q5 = {
             question: "Which class did Severus Snape always want to teach?",
-            response1: "Potions",
-            response2: "Charms",
-            response3: "Transfiguration",
-            answer: "Defence Againts the DA",
-
+            response:["Potions","Transfiguration","Charms","Defence Againts the DA" ],
+            answer: 3,
         },
 
         q6 = {
             question: "Which Hogwarts house did harry belong to?",
-            response1: "Slytherin",
-            response2: "Raven Claw",
-            response3: "Hufflepuff",
-            answer: "Gryfindor",
-
+            response:["Slytherin","Raven Claw","Gryfindor","Hufflepuff" ],
+            answer: 2,
+    
         },
 
         q7 = {
             question: "Which was not one of Voldemort's Horcruxes?",
-            response1: "Harry",
-            response2: "Nagini",
-            response3: "Tom riddle's diary",
-            answer: "Helga's Diadem",
-
+            response:["Harry","Helga's Diadem","Nagini","Tom riddle's diary"],
+            answer: 1,
+        
         },
 
         q8 = {
             question: "When is Harry’s birthday?",
-            response1: "Jun 20",
-            response2: "Aug 6",
-            response3: "July 8",
-            answer: "July 31",
-
+            response:["Jun 20","Aug 6","July 8","July 31"],
+            answer: 3,
         },
 
         q9 = {
             question: "Which one is not a unforgivable spell ?",
-            response1: "Avada Kadavra",
-            response2: "Cruciatus",
-            response3: "Imperius",
-            answer: "Spectrum Patronus",
+            response:["Avada Kadavra","Spectrum Patronus","Cruciatus","Imperius"],
+            answer: 1,
 
         },
     ],
@@ -114,7 +96,7 @@ var app = (function () {
             private.stop();
             private.i++;
             private._Time =5;
-            
+
         }
     },
 
@@ -130,74 +112,141 @@ var app = (function () {
 
     return {  
 
-        //get index value
-        getI: function(){
-            return private.i;
-        },
-        //set index value
-        setI: function(){
-            private.i = private.i +1;
+    
+
+        getQuestionLenght: function(){
+           return private.questions.length;
+
         },
 
-        //get var time 
-        get_Time: function(){
+         getCurrentQuestion: function(){
+            return private.currentQuestion;
 
-            return private._Time;
+         },
+
+         setCurrentQuestion: function(){
+
+            private.currentQuestion +=1;
+         },
+
+         setCorrectAnswer: function(){
+
+            private.correctAnswer+=1;
+         },
+
+         getCorrecAnswer: function(){
+
+            return private.correctAnswer;
+         },
+
+         setWrongAnswer: function(){
+             private.wrongAnswer+=1;
+         },
+
+         getWrongAnswer: function(){
+
+            return private.wrongAnswer;
+         },
+
+
+
+         setUnAnswer: function(){
+
+            private.unAnswer+=1;
+         },
+
+         getUnAnswer: function(){
+             return private.unAnswer;
+         },
+
+
+        getStop: function(){
+            private.stop();
         },
 
-        //set var time
         set_Time: function(arg){
             private._Time = arg;
         },
 
-        //get timer
-        get_Timer: function(){
-            return private.interTime();
+        getQuestionsL: function(){
+            return private.questions.length;
         },
 
-        //set timer
-        set_Timer: function(arg){
-            private.decrement(arg);
-        },
+
+
         
 
         init: function(){
-       
-            this.set_Time(20);
-            private.interTime();
-            this.displayquestion(this.getI());
+        
+            this.displayquestion();
             
         },
 
-  
 
-        reset: function(){},
+        displayquestion: function () {
+            $(".quiz").empty();
+            // this.getStop();
+            // this.set_Time(5);
+            // private.interTime();
+    
+            var a = $("<div>");
+            a.addClass("row");
+            a.text(private.questions[this.getCurrentQuestion()].question);
+            $(".quiz").append(a);
 
-        displayquestion: function(arg) {
 
-            var i = arg;
-            $(".quiz").append("<div class = 'row ' >"+ private.questions[i].question +"</div>");
-            $(".quiz").append("<div class = 'row ' onclick='app.checkAnswer(event)'> "+ private.questions[i].response1 +"</div>");
-            $(".quiz").append("<div class = 'row' onclick='app.checkAnswer(event)'>"+ private.questions[i].response2 +"</div>");
-            $(".quiz").append("<div class = 'row' onclick='app.checkAnswer(event)'>"+ private.questions[i].response3 +"</div>");
-            $(".quiz").append("<div class = 'row' onclick='app.checkAnswer(event)'>"+ private.questions[i].answer +"</div>");
-
+            for (var i = 0; i < 4; i++) {
+                var b = $("<div>");
+                b.attr("data-state", i);
+                b.addClass("row index");
+                b.attr("onclick", "app.checkAnswer(event)");
+                b.text(private.questions[this.getCurrentQuestion()].response[i]);
+                $(".quiz").append(b);
+            }
         },
 
         checkAnswer: function(){
-            console.log(event.target.innerText);  
-        if (event.target.innerText === private.questions[this.getI()].answer){
-            this.setI = this.setI() + 1;
+        
 
-        console.log(this.setI());
-        console.log("correct");
+           
+        if (this.getCurrentQuestion() <= this.getQuestionLenght()){
+
+        var userInput = $(event.srcElement).attr("data-state");
+
+        if ( userInput  == private.questions[this.getCurrentQuestion()].answer){
+        
+        this.setCurrentQuestion();
+        this.setCorrectAnswer();
+        this.displayAnswer();
+        setTimeout(()=> {this.displayquestion()},5000);
+
         }else {
-
+            this.setCurrentQuestion();
+            this.setWrongAnswer();
+            this.displayAnswer();
+            setTimeout(()=> {this.displayquestion();},5000);
             console.log("Incorrect");
+
         }
+
+    }
+    else {
+        console.log("Game Over");
+    }
         
         },
 
+    displayAnswer: function(arg){
+
+    
+        
+        $(".quiz").empty();
+        var a = $("<div>");
+        a.addClass("row");
+        a.text("Good One");
+        $(".quiz").append(a);
+        
+    }
 
      };
 
