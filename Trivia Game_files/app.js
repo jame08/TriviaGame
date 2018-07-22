@@ -300,7 +300,7 @@ var app = (function () {
             b.text("The Answear is: " + private._displayAns);
             $(".quiz").append(b);
             console.log(private.giphy);
-            $(".quiz").append('<iframe src= "'+private.giphy+'" width="480" height="320" frameBorder="0" class = "mt- 3"></iframe>');
+            $(".quiz").append('<iframe src= "'+ private.giphy +'" width="480" height="320" frameBorder="0" class = "mt- 3"></iframe>');
 
 
         },
@@ -337,19 +337,12 @@ var app = (function () {
 
         randomGiphy:function(arg){
 
-            var i = 0;
             if(arg === "Correct"){
-            i =  Math.floor(Math.random() * (private.correctg.length - 0) ) + 0;
-            console.log("i correct = " + i);
-            private.giphy= private.correctg[i];
-
-
+            private.giphy =  private.correctg[Math.floor(Math.random()*private.correctg.length)];
             }
 
             else {
-                i =  Math.floor(Math.random() * (private.wrongg.length - 0) ) + 0;
-                console.log("i incorre= " + i);
-                private.giphy= private.wrongg[i];
+            private.giphy = private.wrongg[Math.floor(Math.random()*private.wrongg.length)];
             }
 
         } 
